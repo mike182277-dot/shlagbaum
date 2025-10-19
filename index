@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚧 Шлагбаумы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f3f4f6;
+            padding-bottom: 40px;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+            color: white;
+            padding: 24px;
+            padding-bottom: 32px;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header-icon {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 12px;
+            font-size: 24px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .add-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        
+        .add-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #9333ea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content {
+            padding: 16px;
+        }
+        
+        .gate-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        
+        .gate-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gate-button {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+        }
+        
+        .gate-icon {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .gate-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .gate-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .gate-phone {
+            color: #3b82f6;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .gate-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            padding: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+            font-size: 18px;
+        }
+        
+        .icon-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .info-box {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1e40af;
+            font-size: 14px;
+        }
+        
+        .parking-card {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            padding: 24px;
+            color: white;
+            margin-bottom: 16px;
+        }
+        
+        .parking-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 28px;
+        }
+        
+        .parking-header h2 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .parking-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+        
+        .parking-btn {
+            width: 100%;
+            background: white;
+            color: #059669;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .parking-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 12px;
+            padding: 0 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .saved-parking {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .saved-parking:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .parking-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .parking-emoji {
+            font-size: 32px;
+        }
+        
+        .parking-details {
+            flex: 1;
+        }
+        
+        .parking-location {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .parking-date {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .parking-note {
+            font-size: 14px;
+            color: #374151;
+            background: #f9fafb;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .parking-map-icon {
+            color: #3b82f6;
+            font-size: 20px;
+        }
+        
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .history-icon {
+            background: #f3f4f6;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+        
+        .history-details {
+            flex: 1;
+        }
+        
+        .history-gate {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .history-time {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .close-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+        
+        .emoji-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .emoji-btn {
+            font-size: 28px;
+            padding: 12px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .emoji-btn:hover {
+            background: #e5e7eb;
+        }
+        
+        .emoji-btn.selected {
+            background: #dbeafe;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background: #9333ea;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #7c3aed;
+        }
+        
+        .btn-primary:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+        
+        .btn-danger {
+            width: 100%;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div class="header-title">
+                    <div class="header-icon">🚧</div>
+                    <h1>Шлагбаумы</h1>
+                </div>
+                <button class="add-btn" onclick="openAddModal()">+</button>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('gates')">Шлагбаумы</button>
+                <button class="tab" onclick="switchTab('parking')">Парковка</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Gates Tab -->
+            <div id="gates-tab">
+                <div class="info-box">
+                    📞 Нажмите на шлагбаум, чтобы позвонить и открыть его
+                </div>
+                <div id="gates-list"></div>
+                
+                <div id="call-history" class="hidden">
+                    <h3 class="section-title">ПОСЛЕДНИЕ ЗВОНКИ</h3>
+                    <div id="history-list"></div>
+                </div>
+            </div>
+
+            <!-- Parking Tab -->
+            <div id="parking-tab" class="hidden">
+                <div class="parking-card">
+                    <div class="parking-header">
+                        <span>🅿️</span>
+                        <h2>Запомнить парковку</h2>
+                    </div>
+                    <div class="parking-description">
+                        <strong>Долгий тап</strong> — сделать фото и сохранить координаты<br>
+                        <strong>Короткий тап</strong> — открыть последнюю парковку в Яндекс.Картах
+                    </div>
+                    <button class="parking-btn" id="parking-btn">
+                        📸 Нажми и удерживай
+                    </button>
+                </div>
+
+                <div id="parking-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Gate Modal -->
+    <div class="modal" id="add-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Новый шлагбаум</h2>
+                <button class="close-btn" onclick="closeAddModal()">×</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Иконка</label>
+                <div class="emoji-grid" id="emoji-grid"></div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Название</label>
+                <input type="text" class="form-input" id="gate-name" placeholder="Например: Дача">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Номер телефона</label>
+                <input type="tel" class="form-input" id="gate-phone" placeholder="+7 (XXX) XXX-XX-XX">
+            </div>
+            
+            <button class="btn-primary" onclick="addGate()">✓ Добавить</button>
+        </div>
+    </div>
+
+    <!-- Edit Gate Modal -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Редактировать</h2>
+                <button class="close-btn" onclick="closeEditModal()">×</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Название</label>
+                <input type="text" class="form-input" id="edit-name" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Телефон</label>
+                <input type="text" class="form-input" id="edit-phone" readonly>
+            </div>
+            
+            <button class="btn-danger" onclick="deleteGate()">
+                🗑️ Удалить шлагбаум
+            </button>
+            <button class="btn-secondary" onclick="closeEditModal()">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        let gates = [
+            { id: 1, name: 'Арка', phone: 'tel://+74951815329', displayPhone: '+7 (495) 181-53-29', emoji: '🏛️' },
+            { id: 2, name: 'Набережная', phone: 'tel://+74951815319', displayPhone: '+7 (495) 181-53-19', emoji: '🏞️' },
+            { id: 3, name: 'Гончарный пер', phone: 'tel://+74951815339', displayPhone: '+7 (495) 181-53-39', emoji: '🏢' },
+            { id: 4, name: 'Ворота 1', phone: 'tel://8(965)317-39-58', displayPhone: '8 (965) 317-39-58', emoji: '🏦' },
+            { id: 5, name: 'Ворота 2', phone: 'tel://+7(965)317-39-65', displayPhone: '+7 (965) 317-39-65', emoji: '🌳' }
+        ];
+
+        let parkings = [
+            { id: 1, location: 'ТЦ Мега', date: '19 окт, 14:30', note: 'Сектор B, 3 этаж, место 245', emoji: '🚗', coords: { lat: 55.751244, lon: 37.618423 } }
+        ];
+
+        let callHistory = [
+            { id: 1, gate: 'Арка', time: '19 окт, 18:45' },
+            { id: 2, gate: 'Гончарный пер', time: '19 окт, 08:20' }
+        ];
+
+        let currentEditId = null;
+        let selectedEmoji = '🚧';
+        let longPressTimer = null;
+        const emojis = ['🏛️', '🏞️', '🏢', '🏦', '🌳', '🏠', '🏭', '🏗️', '🏰', '🚧'];
+
+        // Initialize
+        function init() {
+            renderGates();
+            renderParkings();
+            renderHistory();
+            renderEmojiGrid();
+            setupParkingButton();
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('gates-tab').classList.toggle('hidden', tab !== 'gates');
+            document.getElementById('parking-tab').classList.toggle('hidden', tab !== 'parking');
+        }
+
+        // Render gates
+        function renderGates() {
+            const list = document.getElementById('gates-list');
+            list.innerHTML = gates.map(gate => {
+                return `
+                    <div class="gate-card">
+                        <button class="gate-button" onclick="callGate(${gate.id})">
+                            <div class="gate-icon">${gate.emoji}</div>
+                            <div class="gate-info">
+                                <div class="gate-name">${gate.name}</div>
+                                <div class="gate-phone">${gate.displayPhone}</div>
+                            </div>
+                            <div class="gate-actions">
+                                <button class="icon-btn" onclick="event.stopPropagation(); openEditModal(${gate.id})">✏️</button>
+                            </div>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Call gate
+        function callGate(id) {
+            const gate = gates.find(g => g.id === id);
+            if (!gate) return;
+
+            const now = new Date();
+            const time = now.toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            
+            callHistory.unshift({ id: callHistory.length + 1, gate: gate.name, time });
+            renderHistory();
+            
+            window.location.href = gate.phone;
+        }
+
+        // Render history
+        function renderHistory() {
+            if (callHistory.length === 0) {
+                document.getElementById('call-history').classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('call-history').classList.remove('hidden');
+            const list = document.getElementById('history-list');
+            list.innerHTML = callHistory.slice(0, 5).map(entry => {
+                return `
+                    <div class="history-item">
+                        <div class="history-icon">📞</div>
+                        <div class="history-details">
+                            <div class="history-gate">${entry.gate}</div>
+                            <div class="history-time">${entry.time}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render parkings
+        function renderParkings() {
+            const list = document.getElementById('parking-list');
+            if (parkings.length === 0) {
+                list.innerHTML = '';
+                return;
+            }
+
+            const parkingItems = parkings.map(parking => {
+                const noteHtml = parking.note ? '<div class="parking-note">' + parking.note + '</div>' : '';
+                return '<div class="saved-parking" onclick="openInMaps(' + parking.id + ')">' +
+                    '<div class="parking-content">' +
+                        '<div class="parking-emoji">' + parking.emoji + '</div>' +
+                        '<div class="parking-details">' +
+                            '<div class="parking-location">' + parking.location + '</div>' +
+                            '<div class="parking-date">' + parking.date + '</div>' +
+                            noteHtml +
+                        '</div>' +
+                        '<div class="parking-map-icon">📍</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            list.innerHTML = '<h3 class="section-title">СОХРАНЁННЫЕ МЕСТА</h3>' + parkingItems;
+        }
+
+        // Open in maps
+        function openInMaps(id) {
+            const parking = parkings.find(p => p.id === id);
+            if (!parking) return;
+            
+            window.location.href = `yandexmaps://maps.yandex.ru/?pt=${parking.coords.lon},${parking.coords.lat}&z=18&l=map`;
+        }
+
+        // Setup parking button
+        function setupParkingButton() {
+            const btn = document.getElementById('parking-btn');
+            
+            btn.addEventListener('mousedown', () => {
+                longPressTimer = setTimeout(() => {
+                    saveParking();
+                    longPressTimer = null;
+                }, 700);
+            });
+            
+            btn.addEventListener('mouseup', () => {
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                    if (parkings.length > 0) {
+                        openInMaps(parkings[0].id);
+                    }
+                }
+            });
+            
+            btn.addEventListener('touchstart', () => {
+                longPressTimer = setTimeout(() => {
+                    saveParking();
+                    longPressTimer = null;
+                }, 700);
+            });
+            
+            btn.addEventListener('touchend', () => {
+                if (longPressTimer) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                    if (parkings.length > 0) {
+                        openInMaps(parkings[0].id);
+                    }
+                }
+            });
+        }
+
+        // Save parking
+        function saveParking() {
+            const now = new Date();
+            const date = now.toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            
+            parkings.unshift({
+                id: parkings.length + 1,
+                location: 'Текущее место',
+                date: date,
+                note: '',
+                emoji: '📸',
+                coords: { lat: 55.751244, lon: 37.618423 }
+            });
+            
+            renderParkings();
+            alert('📸 Фото и координаты сохранены!');
+        }
+
+        // Emoji grid
+        function renderEmojiGrid() {
+            const grid = document.getElementById('emoji-grid');
+            grid.innerHTML = emojis.map(emoji => {
+                const selectedClass = emoji === selectedEmoji ? 'selected' : '';
+                return '<button class="emoji-btn ' + selectedClass + '" onclick="selectEmoji(\'' + emoji + '\')">' + emoji + '</button>';
+            }).join('');
+        }
+
+        function selectEmoji(emoji) {
+            selectedEmoji = emoji;
+            renderEmojiGrid();
+        }
+
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('add-modal').classList.add('active');
+            document.getElementById('gate-name').value = '';
+            document.getElementById('gate-phone').value = '';
+            selectedEmoji = '🚧';
+            renderEmojiGrid();
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.remove('active');
+        }
+
+        function addGate() {
+            const name = document.getElementById('gate-name').value.trim();
+            const phone = document.getElementById('gate-phone').value.trim();
+            
+            if (!name || !phone) return;
+            
+            const cleanPhone = phone.replace(/[^0-9+]/g, '');
+            gates.push({
+                id: gates.length + 1,
+                name: name,
+                phone: `tel://${cleanPhone}`,
+                displayPhone: phone,
+                emoji: selectedEmoji
+            });
+            
+            renderGates();
+            closeAddModal();
+        }
+
+        function openEditModal(id) {
+            currentEditId = id;
+            const gate = gates.find(g => g.id === id);
+            if (!gate) return;
+            
+            document.getElementById('edit-name').value = gate.name;
+            document.getElementById('edit-phone').value = gate.displayPhone;
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+            currentEditId = null;
+        }
+
+        function deleteGate() {
+            if (!currentEditId) return;
+            
+            gates = gates.filter(g => g.id !== currentEditId);
+            renderGates();
+            closeEditModal();
+        }
+
+        // Initialize app
+        init();
+    </script>
+</body>
+</html>
