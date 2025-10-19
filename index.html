@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚧 Шлагбаумы</title>
+    <title>🚗 Шлагбаумы</title>
     <style>
         * {
             margin: 0;
@@ -604,9 +604,9 @@
         ];
 
         let currentEditId = null;
-        let selectedEmoji = '🚧';
+        let selectedEmoji = '🚗';
         let longPressTimer = null;
-        const emojis = ['🏛️', '🏞️', '🏢', '🏦', '🌳', '🏠', '🏭', '🏗️', '🏰', '🚧'];
+        const emojis = ['🏛️', '🏞️', '🏢', '🏦', '🌳', '🏠', '🏭', '🏗️', '🏰', '🚗'];
 
         // Initialize
         function init() {
@@ -793,7 +793,7 @@
             document.getElementById('add-modal').classList.add('active');
             document.getElementById('gate-name').value = '';
             document.getElementById('gate-phone').value = '';
-            selectedEmoji = '🚧';
+            selectedEmoji = '🚗';
             renderEmojiGrid();
         }
 
